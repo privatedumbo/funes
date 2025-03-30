@@ -6,8 +6,7 @@ SET unsafe_enable_version_guessing = true;
 
 CREATE OR REPLACE SECRET (
     TYPE s3,
-    PROVIDER credential_chain,
-    PROFILE dumbo
+    PROVIDER credential_chain
 );
 
 CREATE VIEW IF NOT EXISTS {{ table_name }}

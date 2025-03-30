@@ -14,10 +14,10 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
-    "boto3>=1.37.23",
+    "boto3",
     "duckdb",
-    "jinja2>=3.1.6",
-    "loguru>=0.7.3",
+    "jinja2",
+    "loguru",
     "narwhals",
     "polars",
     "pyarrow",

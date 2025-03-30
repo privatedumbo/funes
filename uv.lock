@@ -326,10 +326,10 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "boto3", specifier = ">=1.37.23" },
+    { name = "boto3" },
     { name = "duckdb" },
-    { name = "jinja2", specifier = ">=3.1.6" },
-    { name = "loguru", specifier = ">=0.7.3" },
+    { name = "jinja2" },
+    { name = "loguru" },
     { name = "narwhals" },
     { name = "polars" },
     { name = "pyarrow" },

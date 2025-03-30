@@ -31,8 +31,7 @@ class DuckDBQueryEngine:
     def query(self, query: str) -> QueryResult:
         authenticate = """CREATE OR REPLACE SECRET (
             TYPE s3,
-            PROVIDER credential_chain,
-            PROFILE dumbo
+            PROVIDER credential_chain
         );"""
         self.duckdb_connection.sql(authenticate)
         result = self.duckdb_connection.sql(query)
