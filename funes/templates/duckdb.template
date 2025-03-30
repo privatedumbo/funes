@@ -1,0 +1,18 @@
+INSTALL iceberg;
+INSTALL httpfs;
+INSTALL aws;
+
+SET unsafe_enable_version_guessing = true;
+
+CREATE OR REPLACE SECRET (
+    TYPE s3,
+    PROVIDER credential_chain,
+    PROFILE dumbo
+);
+
+CREATE VIEW IF NOT EXISTS {{ table_name }}
+AS
+SELECT
+    *
+FROM
+  iceberg_scan('{{ location }}/{{ table_name }}', allow_moved_paths = true );
