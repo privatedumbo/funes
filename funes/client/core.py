@@ -9,6 +9,7 @@ from pyiceberg.table import Table
 
 from funes.catalog.base import CatalogClient
 from funes.query.duckdb import DuckDBQueryEngine
+from funes.query.result import QueryResult
 
 template_path = Path(__file__).parent.parent / "templates" / "duckdb.template"
 
@@ -19,8 +20,22 @@ class Funes:
     duckdb_client: DuckDBQueryEngine
 
     def write_and_register_dataframe(self, dataset: IntoFrame, *, table: str) -> None:
+        """
+        Write a dataset to a table and register it in the iceberg catalog.
+
+        After having registered a dataset, it can be queried using the `query` method.
+        """
         self.write_dataframe(dataset, table=table)
         self.register_table(table)
+
+    def query(self, query: str) -> QueryResult:
+        """
+        Execute a query.
+
+        Queries can be executed against registered tables.
+
+        """
+        return self.duckdb_client.query(query)
 
     def write_dataframe(self, dataset: IntoFrame, *, table: str) -> None:
         iceberg_table = self._create_table_if_not_exists(table, dataset)
@@ -31,9 +46,6 @@ class Funes:
         logger.info(f"Registering table {table}")
         self.duckdb_client.register_table(table, location)
         logger.info(f"Table {table} registered")
-
-    def query(self, query: str) -> None:
-        self.duckdb_client.query(query)
 
     def _create_table_if_not_exists(self, table: str, dataset: IntoFrame) -> Table:
         dataset_schema = self.catalog_client.schema_for_dataframe(dataset)

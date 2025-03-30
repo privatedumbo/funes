@@ -14,7 +14,7 @@ def get_glue_catalog_client() -> GlueCatalogClient:
 
 
 def get_duckdb_client() -> DuckDBQueryEngine:
-    duckdb_database = Path(__file__).parent.parent.parent / "data" / "funes.db"
+    duckdb_database = Path(__file__).parent.parent.parent / "funes.db"
     return DuckDBQueryEngine.initialize(duckdb_database)
 
 
@@ -29,4 +29,5 @@ funes = Funes(
 dataset = pl.DataFrame({"id": range(1000), "value": [i * 2 for i in range(1000)]})
 
 funes.write_and_register_dataframe(dataset, table="table_name")
-funes.query("SELECT * FROM table_name")
+result = funes.query("SELECT * FROM table_name")
+result.show()

@@ -6,7 +6,7 @@
 [![Commit activity](https://img.shields.io/github/commit-activity/m/privatedumbo/funes)](https://img.shields.io/github/commit-activity/m/privatedumbo/funes)
 [![License](https://img.shields.io/github/license/privatedumbo/funes)](https://img.shields.io/github/license/privatedumbo/funes)
 
-Storing datasets with Iceberg and reading them with DuckDB
+Storing datasets with Iceberg and reading them with DuckDB.
 
 ## Usage
 

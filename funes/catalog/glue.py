@@ -9,19 +9,16 @@ from pyiceberg.catalog import load_catalog
 from funes.catalog.base import CatalogClient, CatalogSettings
 
 
+@dataclass(frozen=True)
+class GlueCatalogClient(CatalogClient):
+    @classmethod
+    def initialize(cls, settings: CatalogSettings) -> "GlueCatalogClient":
+        catalog = load_catalog(**settings.model_dump())
+        return GlueCatalogClient(catalog=catalog)
+
+
 class GlueCatalogSettings(CatalogSettings):
-    """
-    Settings for the Glue Catalog.
-
-    The generated settings work with:
-    - A Glue Catalog
-    - An s3 bucket
-
-    Args:
-        name: Name of the AWS Glue database.
-        type: Type of the catalog.
-
-    """
+    """Settings for the Glue Catalog."""
 
     name: str
     type: Literal["glue"] = "glue"
@@ -52,11 +49,3 @@ class GlueCatalogSettings(CatalogSettings):
             "glue.secret-access-key": credentials_properties["secret-access-key"],
             "glue.session-token": credentials_properties["session-token"],
         }
-
-
-@dataclass(frozen=True)
-class GlueCatalogClient(CatalogClient):
-    @classmethod
-    def initialize(cls, settings: CatalogSettings) -> "GlueCatalogClient":
-        catalog = load_catalog(**settings.model_dump())
-        return GlueCatalogClient(catalog=catalog)

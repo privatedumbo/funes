@@ -5,6 +5,8 @@ import duckdb
 from duckdb import DuckDBPyConnection
 from jinja2 import Template
 
+from funes.query.result import QueryResult
+
 template_path = Path(__file__).parent.parent / "templates" / "duckdb.template"
 
 
@@ -26,7 +28,7 @@ class DuckDBQueryEngine:
     def start_ui(self) -> None:
         self.duckdb_connection.execute("CALL start_ui();")
 
-    def query(self, query: str) -> None:
+    def query(self, query: str) -> QueryResult:
         authenticate = """CREATE OR REPLACE SECRET (
             TYPE s3,
             PROVIDER credential_chain,
@@ -34,4 +36,4 @@ class DuckDBQueryEngine:
         );"""
         self.duckdb_connection.sql(authenticate)
         result = self.duckdb_connection.sql(query)
-        result.show()
+        return QueryResult(result)
