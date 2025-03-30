@@ -1,0 +1,99 @@
+[project]
+name = "funes"
+version = "0.0.1"
+description = "Storing datasets with Iceberg and reading them with DuckDB"
+authors = [{ name = "Franco Bocci", email = "francogbocci@gmail.com" }]
+readme = "README.md"
+keywords = ["python"]
+requires-python = ">=3.12,<4.0"
+classifiers = [
+    "Intended Audience :: Developers",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://privatedumbo.github.io/funes/"
+Repository = "https://github.com/privatedumbo/funes"
+Documentation = "https://privatedumbo.github.io/funes/"
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pre-commit",
+    "tox-uv",
+    "deptry",
+    "mypy",
+    "pytest-cov",
+    "ruff",
+    "mkdocs",
+    "mkdocs-material",
+    "mkdocstrings[python]",
+    "poethepoet",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.setuptools]
+py-modules = ["funes"]
+
+[tool.mypy]
+strict = true
+
+[tool.pytest.ini_options]
+addopts = """\
+    --cov funes \
+    --cov tests \
+    --cov-report term-missing \
+    --no-cov-on-fail
+"""
+
+[tool.ruff]
+target-version = "py312"
+line-length = 88
+fix = true
+output-format = "full"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "ANN",      # Type hints related, let mypy handle these.
+    "COM812",   # "Trailing comma missing". If black is happy, we are happy.
+    "D",        # Docstrings related, way too strict to our taste
+    "ISC001",   # Implicit string concatenation
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "ARG",      # "Unused function argument". Fixtures are often unused.
+    "S101",     # "Use of `assert` detected"
+    "S106",     # "Possible hardcoded password"
+    "PT004",    # Does not return anything, add leading underscore
+    "PLR2004",  # Magic value used in comparison
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    # Don't complain about lines explicitly marked as uncoverable
+    "pragma: no cover",
+    # Don't complain about type checking code
+    "if TYPE_CHECKING:",
+    # Don't complain about not-implemented parts of code
+    "raise NotImplementedError",
+    # Don't complain about abstract methods, they aren't run
+    '@(abc\.)?abstractmethod',
+]
+skip_empty = true
+sort = "cover"
+
+[tool.coverage.run]
+branch = true
+source = ["funes"]
+
+[tool.poe]
+include = "${POE_GIT_DIR}/scripts/project.toml"

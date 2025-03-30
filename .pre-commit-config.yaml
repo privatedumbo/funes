@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "v5.0.0"
+    hooks:
+      - id: check-added-large-files
+      - id: check-ast
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-json
+        exclude: ^.devcontainer/devcontainer.json
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: pretty-format-json
+        exclude: ^.devcontainer/devcontainer.json
+        args: [--autofix]
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: linting
+        name: Linting
+        language: system
+        entry: uv run poe flc
+        pass_filenames: false
+        types: [python]

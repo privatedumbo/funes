@@ -1,0 +1,43 @@
+[tool.poe.tasks.format]
+help = "Format code."
+cmd = "uv run ruff format ${POE_ROOT}"
+
+[tool.poe.tasks.lint]
+help = "Lint code."
+cmd = "uv run ruff check --fix ${POE_ROOT}"
+
+[tool.poe.tasks.check]
+help = "Run type checker."
+cmd = "uv run mypy ${POE_ROOT}"
+
+[tool.poe.tasks.check-deps]
+help = "Check for obsolete dependencies."
+cmd = "uv run deptry ${POE_ROOT}"
+
+[tool.poe.tasks.flc]
+help = "`flc`: Format, lint, and check."
+sequence = [ "format", "lint", "check", "check-deps" ]
+
+[tool.poe.tasks.flct]
+help = "`flct`: Format, lint, check, and test."
+sequence = [ "format", "lint", "check", "check-deps", "test" ]
+
+[tool.poe.tasks.docs-test]
+help = "Test if documentation can be built without warnings or errors."
+cmd = "uv run mkdocs build -s"
+
+[tool.poe.tasks.docs]
+help = "Build and serve the documentation."
+cmd = "uv run mkdocs serve"
+
+[tool.poe.tasks.test]
+help = "Run tests."
+cmd = "uv run pytest ${POE_ROOT}"
+
+[tool.poe.tasks.ci-format]
+help = "Format code in the CI pipeline."
+cmd = "uv run ruff format --check ${POE_ROOT}"
+
+[tool.poe.tasks.ci-lint]
+help = "Lint code in the CI pipeline."
+cmd = "uv run ruff check ${POE_ROOT}"

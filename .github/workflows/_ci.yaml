@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  workflow_call:
+    inputs:
+      python-version:
+        required: true
+        type: string
+      uv-version:
+        required: true
+        type: string
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install python and uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: ${{ inputs.uv-version }}
+          python-version: ${{ inputs.python-version }}
+
+      - name: Install package dependencies
+        run: uv sync --all-packages --all-groups --all-extras
+
+      - name: Format
+        run: uv run poe ci-format
+
+      - name: Lint
+        run: uv run poe ci-lint
+
+      - name: Check
+        run: uv run poe check
+
+      - name: Test
+        run: uv run poe test
+
+      - name: Check docs
+        run: uv run poe docs-test

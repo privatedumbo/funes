@@ -1,0 +1,19 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  continuous-integration:
+    uses: ./.github/workflows/_ci.yaml
+    secrets: inherit
+    strategy:
+      matrix:
+        python-version: [ "3.12" ]
+    with:
+      python-version: ${{ matrix.python-version }}
+      uv-version: "0.6.10"
